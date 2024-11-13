@@ -49,7 +49,7 @@ class KerasMLP:
     def compile(
         self, 
         loss_fn=keras.losses.CategoricalCrossentropy(),   # Cross entropy loss by default
-        optimizer=keras.optimizers.SGD(learning_rate=1)   # Vanilla SGD by default
+        optimizer=keras.optimizers.SGD(learning_rate=1.0)   # Vanilla SGD by default
     ): 
         self.model.compile(loss=loss_fn,
                            optimizer=optimizer,
