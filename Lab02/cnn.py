@@ -2,14 +2,20 @@ import numpy as np
 from scipy import signal
 import skimage
 import data_generator
-
+    
 # Different activations functions
 def activation(x, activation):
     
-    #TODO: specify the different activation functions
+    # # TODO: specify the different activation functions
     # 'activation' could be: 'linear', 'relu', 'sigmoid', or 'softmax'
-    if activation == '':
-        # TODO
+    if activation == 'linear':
+        return x
+    if activation == 'relu':
+        return np.maximum(0,x)
+    if activation == 'sigmoid':
+        return 1/(1 + np.exp(-x)) 
+    if activation == 'softmax':
+        return (np.exp(x)/np.exp(x).sum())
     else:
         raise Exception("Activation function is not valid", activation) 
 
@@ -21,13 +27,14 @@ def conv2d_layer(h,     # activations from previous layer, shape = [height, widt
 ):
     # TODO: implement the convolutional layer
     # 1. Specify the number of input and output channels
-    CI = # Number of input channels
-    CO = # Number of output channels
+    CI = W.shape[2] # Number of input channels
+    CO = W.shape[3] # Number of output channels
     
     # 2. Setup a nested loop over the number of output channels 
     #    and the number of input channels
-    for i in ...:
-        for j in ...:
+    for i in CI:
+        for j in CO:
+            act(np.dot(W,h) + b)
             
     # 3. Get the kernel mapping between channels i and j
             kernel =
@@ -45,35 +52,36 @@ def conv2d_layer(h,     # activations from previous layer, shape = [height, widt
 def pool2d_layer(h):  # activations from conv layer, shape = [height, width, channels]
     # TODO: implement the pooling operation
     # 1. Specify the height and width of the output
-    sy, sx = 
+    sy, sx = 2, 2  # Pooling window size (fixed to 2x2 as default)
 
     # 2. Specify array to store output
-    ho = 
 
     # 3. Perform pooling for each channel.
     #    You can, e.g., look at the measure.block_reduce() function
     #    in the skimage library
+    ho = np.stack([
+        skimage.measure.block_reduce(h[:, :, c], block_size=(sy, sx), func=np.max)
+        for c in range(h.shape[2])
+    ], axis=-1)
     
     return ho
-
 
 # Flattening layer
 def flatten_layer(h): # activations from conv/pool layer, shape = [height, width, channels]
     # TODO: Flatten the array to a vector output.
     # You can, e.g., look at the np.ndarray.flatten() function
-
+    return np.ndarray.flatten(h)
     
 # Dense (fully-connected) layer
 def dense_layer(h,   # Activations from previous layer
                 W,   # Weight matrix
                 b,   # Bias vector
-                act  # Activation function
-):
+                act):  # Activation function
     # TODO: implement the dense layer.
     # You can use the code from your implementation
     # in Lab 1. Make sure that the h vector is a [Kx1] array.
+    return act(np.dot(h, W) + b)
 
-    
 #---------------------------------
 # Our own implementation of a CNN
 #---------------------------------
@@ -147,13 +155,19 @@ class CNN:
         # TODO: formulate the training loss and accuracy of the CNN.
         # Assume the cross-entropy loss.
         # For the accuracy, you can use the implementation from Lab 1.
-        train_loss = 
-        train_acc = 
+
+        y_predict_train = self.feedforward(self.dataset.x_train)
+
+        train_loss = -np.sum(self.dataset.y_train * np.log(y_predict_train)) / len(y_predict_train)
+        train_acc = np.mean(np.argmax(y_predict_train, 1) == self.dataset.y_train)
         print("\tTrain loss:     %0.4f"%train_loss)
         print("\tTrain accuracy: %0.2f"%train_acc)
 
         # TODO: formulate the test loss and accuracy of the CNN
-        test_loss = 
-        test_acc = 
+
+        y_predict_test = self.feedforward(self.dataset.x_test)
+
+        test_loss = -np.sum(self.dataset.y_test * np.log(y_predict_test)) / len(y_predict_test)
+        test_acc = np.mean(np.argmax(y_predict_test, 1) == self.dataset.y_test)
         print("\tTest loss:      %0.4f"%train_loss)
         print("\tTest accuracy:  %0.2f"%test_acc)
