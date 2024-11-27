@@ -154,8 +154,8 @@ class CNN:
             elif self.lname[l] == 'dense':
                 if l==(len(self.lname)-1):
                     act = 'softmax'
-                h = dense_layer(h, self.W[l], self.b[l], act)
-        return np.expand_dims(h, axis=0)
+                h = dense_layer(h, self.W[l], self.b[l], act).flatten()
+        return h
 
     # Feedforward through the CNN of a dataset
     def feedforward(self, x):
