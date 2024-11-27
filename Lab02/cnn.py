@@ -172,32 +172,6 @@ class CNN:
             
         return y
 
-    # # Measure performance of model
-    # def evaluate(self):
-    #     print('Model performance:')
-
-    #     TODO: formulate the training loss and accuracy of the CNN.
-    #     Assume the cross-entropy loss.
-    #     For the accuracy, you can use the implementation from Lab 1.
-
-    #     y_predict_train = self.feedforward(self.dataset.x_train)
-
-    #     train_loss = -np.sum(self.dataset.y_train * np.log(y_predict_train)) / len(y_predict_train)
-        
-    #     train_acc = np.mean(np.argmax(y_predict_train, 1) == self.dataset.y_train)
-    #     print("\tTrain loss:     %0.4f"%train_loss)
-    #     print("\tTrain accuracy: %0.2f"%train_acc)
-
-    #     TODO: formulate the test loss and accuracy of the CNN
-
-    #     y_predict_test = self.feedforward(self.dataset.x_test)
-
-    #     test_loss = -np.sum(self.dataset.y_test * np.log(y_predict_test)) / len(y_predict_test)
-
-    #     test_acc = np.mean(np.argmax(y_predict_test, 1) == self.dataset.y_test)
-    #     print("\tTest loss:      %0.4f"%train_loss)
-    #     print("\tTest accuracy:  %0.2f"%test_acc)
-
     def evaluate(self):
         print('Model performance:')
 
