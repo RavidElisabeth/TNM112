@@ -147,16 +147,19 @@ class CNN:
             
             if self.lname[l] == 'conv':
                 h = conv2d_layer(h, self.W[l], self.b[l], act)
+                #print("conv", h.shape)
             elif self.lname[l] == 'pool':
                 h = pool2d_layer(h)
+                #print("pool", h.shape)
             elif self.lname[l] == 'flatten':
                 h = flatten_layer(h)
+                #print("flatten", h.shape)
             elif self.lname[l] == 'dense':
                 if l==(len(self.lname)-1):
                     act = 'softmax'
                 h = dense_layer(h, self.W[l], self.b[l], act).flatten()
+                #print("dense", h.shape)
         return h
-
     # Feedforward through the CNN of a dataset
     def feedforward(self, x):
         # Output array
@@ -171,6 +174,32 @@ class CNN:
             y[k,:] = self.feedforward_sample(x[k])   
             
         return y
+
+    # # Measure performance of model
+    # def evaluate(self):
+    #     print('Model performance:')
+
+    #     TODO: formulate the training loss and accuracy of the CNN.
+    #     Assume the cross-entropy loss.
+    #     For the accuracy, you can use the implementation from Lab 1.
+
+    #     y_predict_train = self.feedforward(self.dataset.x_train)
+
+    #     train_loss = -np.sum(self.dataset.y_train * np.log(y_predict_train)) / len(y_predict_train)
+        
+    #     train_acc = np.mean(np.argmax(y_predict_train, 1) == self.dataset.y_train)
+    #     print("\tTrain loss:     %0.4f"%train_loss)
+    #     print("\tTrain accuracy: %0.2f"%train_acc)
+
+    #     TODO: formulate the test loss and accuracy of the CNN
+
+    #     y_predict_test = self.feedforward(self.dataset.x_test)
+
+    #     test_loss = -np.sum(self.dataset.y_test * np.log(y_predict_test)) / len(y_predict_test)
+
+    #     test_acc = np.mean(np.argmax(y_predict_test, 1) == self.dataset.y_test)
+    #     print("\tTest loss:      %0.4f"%train_loss)
+    #     print("\tTest accuracy:  %0.2f"%test_acc)
 
     def evaluate(self):
         print('Model performance:')
