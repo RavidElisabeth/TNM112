@@ -147,16 +147,19 @@ class CNN:
             
             if self.lname[l] == 'conv':
                 h = conv2d_layer(h, self.W[l], self.b[l], act)
+                #print("conv", h.shape)
             elif self.lname[l] == 'pool':
                 h = pool2d_layer(h)
+                #print("pool", h.shape)
             elif self.lname[l] == 'flatten':
                 h = flatten_layer(h)
+                #print("flatten", h.shape)
             elif self.lname[l] == 'dense':
                 if l==(len(self.lname)-1):
                     act = 'softmax'
-                h = dense_layer(h, self.W[l], self.b[l], act)
-        return np.expand_dims(h, axis=0)
-
+                h = dense_layer(h, self.W[l], self.b[l], act).flatten()
+                #print("dense", h.shape)
+        return h
     # Feedforward through the CNN of a dataset
     def feedforward(self, x):
         # Output array
